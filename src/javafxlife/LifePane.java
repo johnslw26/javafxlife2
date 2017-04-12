@@ -38,6 +38,7 @@ public class LifePane extends Pane {
     private int xCellCount = 100;
     private int yCellCount = 100;
     private boolean showColors = false;
+    private boolean invert = false;
     private int iteration = 0;
     private final Label lbStatus;
     private final Canvas canvas;
@@ -161,11 +162,19 @@ public class LifePane extends Pane {
     public void drawCells() {
         GraphicsContext g = canvas.getGraphicsContext2D();
         g.clearRect(0, 0, xCellCount * CELLWIDTH, yCellCount * CELLHEIGHT);
-        g.setFill(Color.gray(0, 0.2));
+        if(invert){
+            g.setFill(Color.BLACK);
+        }else{
+            g.setFill(Color.gray(0, 0.2));
+        }
         for (int x = 0; x < xCellCount; x++) {
             for (int y = 0; y < yCellCount; y++) {
                 if (cells[x][y] == 0) {
-                    g.setFill(Color.WHITE);
+                    if(invert){
+                        g.setFill(Color.BLACK);
+                    }else{
+                        g.setFill(Color.WHITE);
+                    }
                 } else {
                     if (showColors) {
                         int myBlue = gen.nextInt(255);
@@ -173,7 +182,13 @@ public class LifePane extends Pane {
                         int myRed = gen.nextInt(255);
                         Color myColor = Color.rgb(myRed, myGreen, myBlue);
                         g.setFill(myColor);
-                    } else {
+                    }else if(invert){
+                        int myBlue = 255;
+                        int myGreen = 255;
+                        int myRed = 255;
+                        Color myColor = Color.rgb(myRed, myGreen, myBlue);
+                        g.setFill(myColor);
+                    }else {
                         g.setFill(Color.BLACK);
                     }
                 }
@@ -238,6 +253,9 @@ public class LifePane extends Pane {
 
     public void setShowColors(boolean showColors) {
         this.showColors = showColors;
+    }
+    public void setInvert(boolean showColors) {
+        this.invert = showColors;
     }
 
     public boolean getShowColors() {

@@ -18,6 +18,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -66,9 +67,21 @@ public class JavaFXLife extends Application {
         final Menu speedMenu = new Menu("Speed");
         final Menu optionsMenu = new Menu("Options");
         final Menu helpMenu = new Menu("Help");
+        final Menu blackoutMenu = new Menu("Blackout");
 
-        myBar.getMenus().addAll(fileMenu, speedMenu, optionsMenu, helpMenu);
+        myBar.getMenus().addAll(fileMenu, speedMenu, optionsMenu, helpMenu,blackoutMenu);
 
+        
+        /**
+         * *********************************************************************
+         * Blackout Menu Section
+         */
+        CheckMenuItem blackout = new CheckMenuItem("Invert?");
+        blackout.setOnAction((ActionEvent e)-> {
+            lifePane.setInvert(blackout.isSelected());
+        });
+        blackoutMenu.getItems().add(blackout);
+        
         /**
          * *********************************************************************
          * File Menu Section
@@ -179,7 +192,16 @@ public class JavaFXLife extends Application {
             readFile(new File("jp.txt"));
             lifePane.drawCells();
         });
-        helpMenu.getItems().add(jp);        
+        helpMenu.getItems().add(jp);  
+        
+        MenuItem lj = new MenuItem("LJ");
+        lj.setOnAction(e -> {
+            lifePane.pause();
+            lifePane.clearCells();
+            readFile(new File("lj.txt"));
+            lifePane.drawCells();
+        });
+        helpMenu.getItems().add(lj);     
         
         MenuItem acorn = new MenuItem("Acorn");
         acorn.setOnAction(e -> {
@@ -215,7 +237,7 @@ public class JavaFXLife extends Application {
                     + "    2) a living cell with 2 or 3 neighbors continues living\n";
             Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
             alert.setTitle("About");
-            alert.setHeaderText("JavaFXLife v1.0 by John Phillips");
+            alert.setHeaderText("JavaFXLife v1.0 by John Phillips and Lucas Johns");
             alert.showAndWait();
         });
         helpMenu.getItems().add(about);
